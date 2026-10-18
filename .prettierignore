@@ -1,0 +1,12 @@
+node_modules
+.next
+package-lock.json
+PRD.md
+SPECs.md
+test-results
+playwright-report
+
+.next-marketplace
+.printnow-files
+
+.next-*
