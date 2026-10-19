@@ -5,6 +5,7 @@ export default defineConfig([
   ...nextVitals,
   ...nextTs,
   globalIgnores([
+    "mobile/**",
     ".next*/**",
     ".next-marketplace/**",
     ".printnow-files/**",

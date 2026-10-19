@@ -17,7 +17,12 @@
     "format:check": "prettier --check .",
     "sandbox": "bash scripts/sandbox-start.sh",
     "worker": "node --use-env-proxy --env-file-if-exists=.env.local workers/runner.mjs",
-    "test:marketplace": "bash scripts/e2e-marketplace.sh"
+    "test:marketplace": "bash scripts/e2e-marketplace.sh",
+    "mobile:dev": "npm --prefix mobile start",
+    "mobile:typecheck": "npm --prefix mobile run typecheck",
+    "mobile:lint": "eslint --config mobile/eslint.config.mjs mobile/App.tsx mobile/index.ts mobile/src mobile/modules/printnow-pdf/index.ts",
+    "mobile:apk": "npm --prefix mobile run build:apk",
+    "test:mobile": "npm --prefix mobile run export:web && playwright test --config playwright.mobile.config.ts"
   },
   "repository": {
     "type": "git",

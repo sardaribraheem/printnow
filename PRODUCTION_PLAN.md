@@ -2,6 +2,8 @@
 
 Status: the local MVP is implemented and validated. Hosted staging/production setup, real authentication and deployment remain unverified.
 
+19 October mobile amendment: Android-first native implementation is underway in `mobile/`; [MOBILE_APP_PLAN.md](MOBILE_APP_PLAN.md) now governs its milestones. Supabase/Vercel setup is deferred by the founder. Prioritize on-device file inspection/previews and minimal temporary cloud storage. The web milestones below describe the earlier local web implementation; they do not establish native APK/device completion.
+
 Source of truth: `PRD.md` and `SPECs.md` version 2.0, with the founder decisions recorded below. The confirmed PDF/PNG/JPEG requirement supersedes PDF-only statements in those documents. Other requirements remain binding.
 
 ## Product understanding
@@ -10,7 +12,7 @@ PrintNow is a mobile-first print-request marketplace for the NIIT community and 
 
 An account may be both customer and printer. Admins manually approve providers and handle restrictions, disputes and operational failures. Eligible printers may review live-request documents with explicit customer consent, but cannot see exact customer contact/destination details before acceptance. Losing printers immediately lose future file access. Already viewed bytes cannot be recalled.
 
-MVP includes the complete request-to-completion workflow, secure file processing, notifications, moderation and retention. Integrated payments, commissions, courier APIs, native apps, push notifications, ratings and office-document conversion are deferred as specified in the source documents.
+MVP includes the complete request-to-completion workflow, secure file processing, notifications, moderation and retention. Native Android screens have been added under the accepted mobile amendment. Integrated payments, commissions, courier APIs, ratings and office-document conversion remain deferred. Native push is planned separately and is not implemented.
 
 ## Decisions and dependencies
 
@@ -73,7 +75,7 @@ The code now implements persistent requests and private files, a bounded PDF/ima
 
 The local browser workflow has completed both delivery and pickup, including a five-page PDF and mixed PNG/JPEG uploads, two competing providers, private chat, payment assertions and customer completion. Database tests exercise grants/RLS, one-winner concurrency, lock-wait expiry, cancellation/withdrawal races, file revocation, privacy, bounded history, pickup-radius restrictions and retention holds. File-worker tests reject encrypted/corrupt/forged files and verify sanitized output. See README.md for repeatable commands.
 
-M0–M7 have local implementations with the evidence above. This does not close their hosted integration gates: actual Auth/Google/email/MFA, Storage/Realtime behavior, privileged migrations and worker deployment remain unverified. M8 staging/load/accessibility/restore and M9 real provider/pilot gates remain open. Optional sponsor/advertising management is deferred; it does not block the zero-fee print workflow. No payment processor, commission system, courier API, native app or push service was added.
+Web M0–M7 have local implementations with the evidence above. This does not close their hosted integration gates: actual Auth/Google/email/MFA, Storage/Realtime behavior, privileged migrations and worker deployment remain unverified. M8 staging/load/accessibility/restore and M9 real provider/pilot gates remain open. Optional sponsor/advertising management is deferred; it does not block the zero-fee print workflow. No payment processor, commission system, courier API or push service was added. Native app work is tracked separately in MOBILE_APP_PLAN.md.
 
 ## Remaining external prerequisites
 

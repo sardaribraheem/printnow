@@ -10,3 +10,14 @@ playwright-report
 .printnow-files
 
 .next-*
+mobile/node_modules
+mobile/.expo
+mobile/dist
+mobile/android
+mobile/ios
+mobile/builds
+mobile/.gradle-home
+mobile/**/build
+mobile/**/.gradle
+mobile/**/.cxx
+mobile/package-lock.json

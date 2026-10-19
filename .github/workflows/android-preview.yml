@@ -1,0 +1,78 @@
+name: Android preview APK
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "mobile/**"
+      - "src/lib/domain/**"
+      - "src/lib/marketplace/types.ts"
+      - ".github/workflows/android-preview.yml"
+permissions:
+  contents: read
+concurrency:
+  group: android-preview-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  apk:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      CI: "1"
+      EXPO_NO_TELEMETRY: "1"
+      ANDROID_HOME: ${{ runner.temp }}/printnow-android
+      ANDROID_USER_HOME: ${{ runner.temp }}/printnow-android-user
+      CMAKE_BUILD_PARALLEL_LEVEL: "2"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+          cache-dependency-path: mobile/package-lock.json
+      - uses: actions/setup-java@v4
+        id: jdk17
+        with:
+          distribution: temurin
+          java-version: "17"
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+      - name: Install the verified Android SDK launcher
+        run: |
+          curl --fail --location --retry 3 https://dl.google.com/android/repository/commandlinetools-linux-16111833_latest.zip -o "$RUNNER_TEMP/android-tools.zip"
+          echo "0877a1d048fe4a24efe2eff536ca4223f7adeb58648bb81909d33c446918cfa8  $RUNNER_TEMP/android-tools.zip" | sha256sum --check
+          mkdir -p "$ANDROID_HOME/cmdline-tools"
+          unzip -q "$RUNNER_TEMP/android-tools.zip" -d "$RUNNER_TEMP/android-unpack"
+          mv "$RUNNER_TEMP/android-unpack/cmdline-tools" "$ANDROID_HOME/cmdline-tools/latest"
+          for package in "platform-tools" "platforms;android-37.0" "build-tools;37.0.0" "ndk;27.1.12297006" "cmake;3.22.1"; do
+            "$ANDROID_HOME/cmdline-tools/latest/bin/android" --no-metrics --sdk="$ANDROID_HOME" sdk install "$package"
+          done
+      - name: Install mobile dependencies and check types
+        working-directory: mobile
+        run: |
+          npm ci
+          npm run typecheck
+      - name: Configure the Java 17 compilation toolchain
+        env:
+          PRINTNOW_JDK17: ${{ steps.jdk17.outputs.path }}
+        run: |
+          mkdir -p mobile/.gradle-home
+          printf 'org.gradle.java.installations.paths=%s\norg.gradle.java.installations.auto-download=false\n' "$PRINTNOW_JDK17" > mobile/.gradle-home/gradle.properties
+      - name: Build the standalone internal-testing APK
+        working-directory: mobile
+        run: npm run build:apk
+      - name: Check the package and embedded app bundle
+        run: |
+          "$ANDROID_HOME/build-tools/37.0.0/aapt" dump badging mobile/builds/printnow-preview.apk
+          unzip -l mobile/builds/printnow-preview.apk | grep -E 'assets/index.android.bundle|lib/arm64-v8a/|lib/x86_64/'
+          sha256sum mobile/builds/printnow-preview.apk > mobile/builds/printnow-preview.apk.sha256
+      - uses: actions/upload-artifact@v4
+        with:
+          name: printnow-android-preview
+          path: |
+            mobile/builds/printnow-preview.apk
+            mobile/builds/printnow-preview.apk.sha256
+          if-no-files-found: error
+          retention-days: 3

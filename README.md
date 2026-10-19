@@ -4,6 +4,8 @@ A mobile-first printing marketplace for the NIIT community and nearby Lahore pro
 
 The application is implemented and runs in the development environment. Hosted Supabase deployment, real authentication/email/OAuth, a production worker and Vercel deployment are **not verified or completed**. [PRD.md](PRD.md) and [SPECs.md](SPECs.md) define the product; [PRODUCTION_PLAN.md](PRODUCTION_PLAN.md) records the accepted image-upload expansion and remaining release gates.
 
+The Android-first native app is now in [mobile/](mobile/README.md). It has an upload-first phone interface and a clearly labelled sample mode that keeps selected files on the device. Supabase/Vercel setup is deferred at the founder's request. Native APK compilation/device testing remain outstanding; see [MOBILE_APP_PLAN.md](MOBILE_APP_PLAN.md) for milestone status.
+
 ## What works
 
 - Three-step introduction; customer contact/address setup; tab-scoped setup restoration through sign-in; manual location entry and geolocation fallback.
@@ -25,6 +27,7 @@ Requirements: Node 24, npm, Docker, Chromium for browser tests, and Poppler (`pd
 ```bash
 cd /workspace/printnow
 npm --cache /workspace/.npm ci
+npm --prefix mobile --cache /workspace/.npm ci
 npm run sandbox
 ```
 
@@ -54,6 +57,9 @@ npm run test:db           # fresh disposable PostgreSQL, RLS and real concurrenc
 npm run test:e2e          # isolated unconfigured production build; desktop/mobile checks
 npm run test:marketplace  # starts its own dev server/worker; mobile marketplace flows
 npm run format:check
+npm run mobile:typecheck
+npm run mobile:lint
+npm run test:mobile       # native UI through a browser test target; not an Android device test
 ```
 
 Database tests use a digest-pinned PostgreSQL image and synthetic data, without host ports or application data mounts. They check ownership, self-promotion, exact-address privacy, offer visibility, acceptance retries, lock-wait expiry, concurrent acceptance/cancellation/withdrawal, radius filtering, evidence holds, active-order retention, bounded chat history and worker isolation. The container is removed after the run.
@@ -84,7 +90,7 @@ Use environment settings for bindings, or ignored `.env.local` for local integra
 
 The privileged key previously exposed in chat was not used or stored and must be rotated. Do not reuse it for deployment. The public key/project connection was verified with read-only JWKS/auth-settings requests. Email signup is enabled and Google is disabled; the login UI reflects live provider settings. Successful hosted signup/login is unverified.
 
-The public API key cannot apply SQL migrations. Authenticated SQL/management access remains unavailable in this chat. Hosted application tables were absent at the last read-only check. Apply the two files in `supabase/migrations/` in order through authenticated Supabase tooling after inspecting the target, or attach authenticated management access so this task can apply them. **Never run files in `supabase/tests/` against a hosted project.**
+Hosted setup is deferred. When it resumes, the public API key cannot apply SQL migrations. Authenticated SQL/management access remains unavailable in this chat. Hosted application tables were absent at the last read-only check. Apply all three files in `supabase/migrations/` in timestamp order through authenticated Supabase tooling after inspecting the target. **Never run files in `supabase/tests/` against a hosted project.**
 
 The migrations create private buckets, storage policies, grants/RLS, transactional business functions and Realtime publication membership when Supabase's publication exists. `marketplace_worker` is executable only by `service_role`. Providers cannot independently download or sign Storage objects: every viewing/range request goes through authorization and audit, using private/no-store responses. Privileged clients are created only in server/worker code.
 

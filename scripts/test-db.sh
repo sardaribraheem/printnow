@@ -20,5 +20,6 @@ run_sql supabase/tests/identity.sql
 run_sql supabase/tests/sandbox-seed.sql
 run_sql supabase/tests/marketplace.sql
 run_sql supabase/tests/retention_and_location.sql
+run_sql supabase/tests/mobile_uploads.sql
 
 node scripts/concurrency-tests.mjs "$container"

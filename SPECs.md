@@ -2,10 +2,12 @@
 
 Version: 2.0 · 18 October 2026  
 Product contract: [PRD.md](PRD.md)  
-Target: Next.js App Router + TypeScript + Supabase Auth/Postgres/Storage/Realtime  
+Target: React Native/Expo Android + Next.js App Router + TypeScript + Supabase Auth/Postgres/Storage/Realtime
 Status: implementation specification, not an implemented or tested application.
 
 ## 1. Architecture and principles
+
+Accepted mobile amendment — 19 October 2026: `mobile/` contains native screens/navigation, device file selection and bounded Android PDF/image inspection and previews. Share portable domain rules/types; keep server credentials and Node-only code out of native bundles. The versioned bearer-token mobile API verifies Supabase identity before database-authorized operations; browser cookie/origin protections remain intact. Keep selected files local until explicit connected submission. Hosted integration is deferred; M1/M2 continue with clearly labelled local samples. See MOBILE_APP_PLAN.md for acceptance gates and storage/reliability limitations.
 
 Use a modular monolith. Next.js provides mobile-first UI, server-rendered authenticated pages, Route Handlers and a shared server data-access layer. Supabase supplies identity, relational data, private file storage and realtime events. Background processing handles file validation/previews, notification delivery and cleanup. Do not run long PDF jobs inside a request with an unreliable time budget.
 
@@ -26,6 +28,7 @@ src/lib/auth/                    server/browser Supabase clients
 src/lib/dal/                     authorization and safe projections
 src/lib/domain/                  validation, print counts, transitions
 src/components/                  shared UI and forms
+mobile/                          React Native/Expo Android client and local PDF module
 supabase/migrations/              schema, RLS, functions, constraints
 supabase/tests/                   SQL authorization/concurrency tests
 workers/                         PDF checks, notifications, cleanup

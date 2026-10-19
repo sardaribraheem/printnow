@@ -5,6 +5,8 @@ Owner: Muhammad Ibraheem Anwar
 Initial market: NIIT university community and nearby Lahore printing providers  
 Implementation companion: [SPECs.md](SPECs.md)
 
+Accepted amendment — 19 October 2026: build an Android-first React Native/Expo app, keeping Next.js for web/admin/API. Accept PDF, PNG and JPEG. The native home prioritizes Upload & Print. Supabase/Vercel setup is deferred at the founder's request. Keep selection, page inspection and previews on the device and minimize later temporary cloud storage; existing retention/dispute protections remain binding. [MOBILE_APP_PLAN.md](MOBILE_APP_PLAN.md) records milestones and implementation status. Native push is planned but not implemented.
+
 ## 1. Product decision
 
 Build a mobile-first marketplace where customers publish print requests and nearby printing providers submit competing, time-limited offers. Customers select the provider; the platform does not impose print prices or assign the cheapest printer automatically.
@@ -32,7 +34,7 @@ The founder’s explicit requirements are binding. The following defaults make i
 
 | Topic | Decision / default | Status |
 |---|---|---|
-| Stack | Next.js and Supabase | Founder requirement |
+| Stack | React Native/Expo Android app, Next.js web/admin/API and Supabase | Accepted mobile amendment |
 | Offers | Five minutes from server creation; multiple printers | Founder requirement |
 | Files | Temporarily stored in private cloud storage | Founder requirement |
 | File visibility | Eligible approved printers may review while request is live | Founder requirement, with consent and access controls |
@@ -61,7 +63,7 @@ The founder’s explicit requirements are binding. The following defaults make i
 
 ### Not in MVP
 
-Platform payment processing, escrow, automatic commission deductions, courier API integration, rider accounts, live rider GPS, native mobile apps, automated printer hardware control, public document URLs, office-file conversion, custom merchandise, automated refund payouts, or nationwide dispatch.
+Platform payment processing, escrow, automatic commission deductions, courier API integration, rider accounts, live rider GPS, automated printer hardware control, public document URLs, office-file conversion, custom merchandise, automated refund payouts, or nationwide dispatch.
 
 An order can be paid even though the platform earns nothing. The printer receives printing/delivery revenue; the app charges no order fee.
 

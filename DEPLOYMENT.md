@@ -2,9 +2,11 @@
 
 The local marketplace is functional. This document prepares deployment; it is not evidence that any hosted deployment, restore or pilot has occurred.
 
+Hosted work is deferred by the founder while native/on-device work continues. See MOBILE_APP_PLAN.md for the Android milestones and minimal-cloud-storage requirement. This runbook is for when connected testing resumes.
+
 ## Stage before production
 
-1. Use the selected fresh Supabase project for development/staging. Inspect its schema and apply `supabase/migrations/202610190001_identity_and_providers.sql` followed by `202610190002_marketplace.sql` through authenticated management/SQL access. Keep production separate. Never apply the local auth harness or synthetic seeds to hosted projects.
+1. Use the selected fresh Supabase project for development/staging. Inspect its schema and apply all three migrations in order: `202610190001_identity_and_providers.sql`, `202610190002_marketplace.sql`, then `202610190003_mobile_upload_retries.sql`. Use authenticated management/SQL access. Keep production separate. Never apply the local auth harness or synthetic seeds to hosted projects.
 2. Add the public project URL/publishable key and exact Vercel app origin in environment settings. Provide a **rotated**, server-only `PRINTNOW_SUPABASE_SERVER_KEY` for object proxying and the worker. Keep it out of public variables, source files, browser bundles and logs.
 3. Configure verified email/password delivery and allowed redirect URLs. Enable Google OAuth only after its consent/configuration and callback URLs are ready. Test success/failure, expiry, unsafe-return-path rejection and sign-out on the actual origin.
 4. Privileged SQL provisions the first admin's `auth.users` ID in `admin_users`; then enroll/verify TOTP through the app. Confirm AAL1 fails and AAL2 succeeds. Add the actual service zone and review provider location/contact/capabilities/hours before activation.

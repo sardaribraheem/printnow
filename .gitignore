@@ -13,3 +13,13 @@ test-results/
 next-env.d.ts
 
 .next-*/
+mobile/.expo/
+mobile/dist/
+mobile/android/
+mobile/ios/
+mobile/builds/
+mobile/.gradle-home/
+*.apk
+*.aab
+*.keystore
+*.jks

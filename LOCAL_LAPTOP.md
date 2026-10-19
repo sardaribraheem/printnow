@@ -1,5 +1,7 @@
 # Test PrintNow on your laptop
 
+For the native Android app, use [mobile/README.md](mobile/README.md). The instructions below run the browser/admin application and its local database/worker.
+
 The local sandbox runs the app, a background file worker and a PostgreSQL database. It creates sample customer, printer and admin accounts automatically. You do not need Supabase keys for this mode.
 
 ## Install prerequisites

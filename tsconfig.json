@@ -35,5 +35,5 @@
     ".next-offline/types/**/*.ts",
     ".next-offline/dev/types/**/*.ts"
   ],
-  "exclude": ["node_modules", ".next-*/**", ".printnow-files"]
+  "exclude": ["node_modules", ".next-*/**", ".printnow-files", "mobile"]
 }

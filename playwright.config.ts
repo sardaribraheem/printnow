@@ -5,7 +5,7 @@ const executablePath =
   (existsSync("/usr/bin/chromium") ? "/usr/bin/chromium" : undefined);
 export default defineConfig({
   testDir: "./tests",
-  testIgnore: "marketplace.spec.ts",
+  testIgnore: ["marketplace.spec.ts", "**/mobile/**"],
   fullyParallel: true,
   workers: 2,
   retries: process.env.CI ? 1 : 0,

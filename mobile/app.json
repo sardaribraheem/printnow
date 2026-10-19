@@ -1,0 +1,41 @@
+{
+  "expo": {
+    "name": "PrintNow",
+    "slug": "printnow-mobile",
+    "scheme": "printnow",
+    "version": "0.2.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "backgroundColor": "#F7F8F4",
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "pk.printnow.app"
+    },
+    "android": {
+      "package": "pk.printnow.app",
+      "versionCode": 1,
+      "adaptiveIcon": {
+        "backgroundColor": "#FFF0E6",
+        "foregroundImage": "./assets/adaptive-icon.png"
+      },
+      "predictiveBackGestureEnabled": true,
+      "blockedPermissions": [
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE",
+        "android.permission.RECORD_AUDIO"
+      ]
+    },
+    "plugins": [
+      "expo-secure-store",
+      "expo-web-browser",
+      "expo-document-picker",
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "Use your location to find printers near your pickup area."
+        }
+      ]
+    ]
+  }
+}
